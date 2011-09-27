@@ -7,12 +7,6 @@
 *.o
 *.so
 
-# Eclipse #
-###########
-.settings
-.classpath
-.project
-
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
