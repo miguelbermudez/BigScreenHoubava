@@ -34,5 +34,5 @@ Thumbs.db
 
 # Miscell #
 ##########
-*.mp3
-*.applet
+data/*.mp3
+bin/*.mp3
