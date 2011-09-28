@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/base/minim/jl1.0.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="BigScreensMilkaSketch/lib/base/minim"/>
@@ -51,6 +50,11 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="BigScreensMilkaSketch/lib/base/core"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/user/colorutils/colorutils.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="BigScreensMilkaSketch/lib/user/colorutils"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/user/controlP5/controlP5.jar" sourcepath="/Users/miguelb/Documents/Processing/libraries/controlP5/src">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="BigScreensMilkaSketch/lib/user/controlP5"/>
@@ -63,6 +67,12 @@
 			<attribute name="javadoc_location" value="file:/Users/miguelb/Documents/Processing/libraries/GLGraphics/reference/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/user/toxiclibscore/toxiclibscore.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="BigScreensMilkaSketch/lib/user/toxiclibscore"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

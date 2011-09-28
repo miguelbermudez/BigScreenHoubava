@@ -1,6 +1,7 @@
 package bigscreensmilkasketch;
 
 import processing.core.PApplet;
+import toxi.geom.Vec2D;
 import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.signals.*;
@@ -21,6 +22,7 @@ public class BigScreensMilkaSketch extends PApplet
 	controlP5.Label ampCountLabel;
 	controlP5.Label occurCountLabel;
 	controlP5.Label currLevelLabel;
+	controlP5.Label frameRateLabel;
 	
 	int sliderWidth = 100;
 	int sliderHeight = 10;
@@ -34,9 +36,15 @@ public class BigScreensMilkaSketch extends PApplet
 	int occurThreshMax = 45;
 	int occurThreshMin = 15;
 	int occurrence_threshold = 30; 	//Threshold for classifying an occurrence
-	int occurrences = 0; 			//Count of each time the amp_count is greater than x	
+	int occurrences = 0; 			//Count of each time the amp_count is greater than x
+	
+	int MAX_PARTICLES = 60;
+	String frameRateStr;
+	Vec2D targetPos;
+	float targetStrength;
 	
 	ArrayList<Note> notes = new ArrayList<Note>();
+	ArrayList<Particle> particles = new ArrayList<Particle>();
 	
 	Minim minim;
 	AudioPlayer song;
@@ -74,6 +82,11 @@ public class BigScreensMilkaSketch extends PApplet
 		fft = new FFT(song.bufferSize(), song.sampleRate());
 		maxLevel = 0;
 		minLevel = Float.MAX_VALUE;
+		
+		targetPos = new Vec2D(0,0);
+		targetStrength = 0;
+		MAX_PARTICLES = fft.specSize();
+		initParticles(MAX_PARTICLES);
 	}
 
 	/* DRAW
@@ -81,7 +94,6 @@ public class BigScreensMilkaSketch extends PApplet
 	public void draw() 
 	{
 		background(100);
-		
 		
 		fft.forward(song.mix);
 		if (amp_count>occurrence_threshold) {
@@ -123,10 +135,15 @@ public class BigScreensMilkaSketch extends PApplet
 
 		//map color to current level
 		float colorLevel = map((float)currentLevel, 0, (float)171.85167, 0, 100);
-		println("\t\tcolorLevel: " + colorLevel);
+		//println("\t\tcolorLevel: " + colorLevel); //debugging
+		
+		for(int i=0; i<MAX_PARTICLES; i++) {
+			particles.get(i).resetForce();
+		}
 		
 		for(int i = 0; i < fft.specSize(); i++) 
 		{
+			
 			if (notes.size()-1 > i) {
 				Note n = notes.get(i);
 				n.update(c, i*interval, fft_ht-fft.getBand(i)*10, fft.getBand(i)*4, fft.getBand(i)*4);
@@ -140,13 +157,42 @@ public class BigScreensMilkaSketch extends PApplet
 			if (fft.getBand(i) > fft_size) {
 				amp_count++;
 		    }
+			
 			Note tn = notes.get(i); 
+			targetPos.x = tn.x;
+			targetPos.y = tn.y;
+			targetStrength = tn.w;
+			
 			if(tn != null) {
-				tn.render();
+				tn.render();				
 			}
-			fill(100);
+			
+			fill(100);			
 	    }
 		
+		for(int j=0; j<MAX_PARTICLES; j++) {
+			for(int k=0; k<MAX_PARTICLES; k++) {
+				if( j != k )
+					particles.get(j).addForFlocking(particles.get(k));
+			}
+		
+			//particles.get(j).addRepulsionForce((float)mouseX, (float)mouseY, 400f, 0.4f);
+			//particles.get(i).addClockwiseForce(tn.x, tn.y, tn.w*100, 0.4f);
+			particles.get(j).addAttractionForce((float)targetPos.x, (float)targetPos.y, 100*occurrences +1, 0.4f);
+			//particles.get(i).addRepulsionForce((float)mouseX, (float)mouseY, 400f, 0.4f);
+		}	
+		
+		for (int i = 0; i < MAX_PARTICLES; i++){
+			Particle p = particles.get(i); 
+			p.addFlockingForce();
+			p.addDampingForce();
+			p.bounceOffWalls();
+			p.update();
+			fill(255,0,0);
+			p.draw();	
+		}
+		
+	
 		frame_count++;
 		
 		
@@ -172,7 +218,7 @@ public class BigScreensMilkaSketch extends PApplet
 		
 		ampCountLabel = new controlP5.Label(this, "Amp Count: "+amp_count, sliderWidth, sliderHeight);
 		ampCountLabel.position.x = controlPos.x;
-		ampCountLabel.position.y = height-(padding*2);
+		ampCountLabel.position.y = height-(padding*3);
 		
 		occurCountLabel = new controlP5.Label(this, "Occur Count: "+occurrences, sliderWidth, sliderHeight);
 		occurCountLabel.position.x = controlPos.x;
@@ -182,8 +228,23 @@ public class BigScreensMilkaSketch extends PApplet
 		currLevelLabel.position.x = controlPos.x;
 		currLevelLabel.position.y = occurCountLabel.position.y + sliderHeight + 5;
 		currLevelLabel.setHeight(40);
+		
+		frameRateStr = Float.toString(frameRate);
+		frameRateLabel = new controlP5.Label(this, frameRateStr + " fps", sliderWidth, sliderHeight);
+		frameRateLabel.position.x = controlPos.x;
+		frameRateLabel.position.y = currLevelLabel.position.y + sliderHeight + 5;
+		frameRateLabel.setHeight(40);
 	}
 	
+	
+	void initParticles(int numParticles)
+	{
+		for (int i=0; i<numParticles; i++){
+			Particle p = new Particle(this, (int)random(3, 15));
+			p.setInitialCondition( random(0, width), random(0, height), 0, 0 );
+			particles.add(p);
+		}
+	}
 	
 	
 	 /* MINIM METHODS
@@ -201,14 +262,17 @@ public class BigScreensMilkaSketch extends PApplet
 	
 	void drawDebugOutput() 
 	{	
+		frameRateStr = Float.toString(round(frameRate));
+		
 		ampCountLabel.set("Amp Count: "+amp_count); 
 		occurCountLabel.set("Occur Count: "+occurrences);
-		currLevelLabel.set("CURRENT LVL: "+currentLevel);
+		currLevelLabel.set("CURRENT LVL: "+currentLevel);		
+		frameRateLabel.set(frameRateStr + "fps");
 		
 		ampCountLabel.draw(this);
 		occurCountLabel.draw(this);
-		
 		currLevelLabel.draw(this);
+		frameRateLabel.draw(this);
 	}
 	
 	
@@ -232,7 +296,15 @@ public class BigScreensMilkaSketch extends PApplet
 	public void keyPressed() 
 	{
 		if(key==' ') {
-			
+			for(int i=0; i<MAX_PARTICLES; i++) {
+				println(particles.get(i).cohesion.count);
+			}
 		}
+	}
+	
+	
+	public void mousePressed()
+	{
+		targetPos.set(mouseX, mouseY);
 	}
 }
