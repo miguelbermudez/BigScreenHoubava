@@ -9,7 +9,9 @@ import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 
 import java.awt.Point;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class BigScreensMilkaSketch extends PApplet 
@@ -23,6 +25,13 @@ public class BigScreensMilkaSketch extends PApplet
 	controlP5.Label occurCountLabel;
 	controlP5.Label currLevelLabel;
 	controlP5.Label frameRateLabel;
+	
+	HashMap<String,int[]> dims = new HashMap<String,int[]>();
+	int[] fullscreen_dims = {3840,1080};
+	int[] halfsize_dims = {1770,540};
+	int[] tiny_dims = {885,270};
+	
+	static String selected_dims;
 	
 	int sliderWidth = 100;
 	int sliderHeight = 10;
@@ -52,16 +61,27 @@ public class BigScreensMilkaSketch extends PApplet
 	FFT fft;
 	float minLevel, maxLevel, currentLevel;
 
+
+	/* START UP
+	 * 
+	 * Set dimensions as "tiny", "halfsize" or "fullscreen" for testing 
+	 * on single screen vs. larger screens.
+	 * ---------------------------------------------------------------- */
+	static public void main(String args[]) {
+		selected_dims = args[0];
+		PApplet.main(new String[] { "bigscreensmilkasketch.BigScreensMilkaSketch" });
+	}
+	
 	
 	/* INIT
 	 * --------------------------------------------------------------- */
 	public void init() 
 	{
-		/*
+		
 		frame.removeNotify();
 		frame.setUndecorated(true);
 		frame.addNotify();
-		*/
+		
 		super.init();
 	}
 	
@@ -70,10 +90,15 @@ public class BigScreensMilkaSketch extends PApplet
 	 * --------------------------------------------------------------- */	
 	public void setup() 
 	{
-		size(1280, 450);
+		dims.put("fullscreen",fullscreen_dims);
+		dims.put("halfsize",halfsize_dims);
+		dims.put("tiny", tiny_dims);
+		
+		size(dims.get(selected_dims)[0], dims.get(selected_dims)[1]);		
 		smooth();
 		frameRate(30);
 		initGUI();
+		
 		
 		minim = new Minim(this);
 		song = minim.loadFile("Houbava Milka (Beautiful Milka).mp3");
@@ -93,6 +118,7 @@ public class BigScreensMilkaSketch extends PApplet
 	 *  ---------------------------------------------------------------- */
 	public void draw() 
 	{
+		frame.setLocation(0, 0);
 		background(100);
 		
 		fft.forward(song.mix);
