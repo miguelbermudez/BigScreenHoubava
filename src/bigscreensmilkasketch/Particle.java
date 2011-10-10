@@ -343,8 +343,8 @@ public class Particle
 		//walls
 		float minx = 0;
 		float miny = 0;
-		float maxx = parent.width;
-		float maxy = parent.height;
+		float maxx = BigScreensMilkaSketch.mWidth;
+		float maxy = BigScreensMilkaSketch.mHeight;
 		
 		if(pos.x > maxx) {
 			pos.x = maxx;

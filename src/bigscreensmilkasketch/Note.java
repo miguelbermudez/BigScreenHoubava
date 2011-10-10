@@ -18,8 +18,8 @@ public class Note
 		c = t_c;
 	    //x = t_x;
 	    //y = t_y;
-	    x = parent.random(100,parent.width-100);
-	    y = parent.random(50,parent.height-50);
+	    x = parent.random(100,BigScreensMilkaSketch.mWidth-100);
+	    y = parent.random(50,BigScreensMilkaSketch.mHeight-50);
 	    w = t_w;
 	    h = t_h;
 	  }

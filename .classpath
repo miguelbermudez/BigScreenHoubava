@@ -67,6 +67,11 @@
 			<attribute name="javadoc_location" value="file:/Users/miguelb/Documents/Processing/libraries/GLGraphics/reference/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/user/mpe/mpe.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="BigScreensMilkaSketch/lib/user/mpe"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/user/toxiclibscore/toxiclibscore.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="BigScreensMilkaSketch/lib/user/toxiclibscore"/>
