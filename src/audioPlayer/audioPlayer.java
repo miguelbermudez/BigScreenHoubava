@@ -36,7 +36,7 @@ public class audioPlayer extends BigScreensMilkaSketch {
 			// At IAC
 			// client = new AsyncClient("192.168.130.241",9003);
 		}
-		
+		client.DEBUG=false;
 		
 		size(255, 255);
 		smooth();
@@ -57,10 +57,13 @@ public class audioPlayer extends BigScreensMilkaSketch {
 		  {
 			float f = fft.getBand(i)*10000/10000; //this should get rid of too many decimal places
 		    songData.add(Float.toString(f));
-		    System.out.println(songData.get(i));
 		  }
 		String msg = StringUtils.join(songData,",");
-		client.broadcast(msg);
+		if (msg.length() > 1) {
+			client.broadcast(msg);
+		} else {
+			System.out.println("msg: "+msg);			
+		}
 		songData.clear();
 	}
 

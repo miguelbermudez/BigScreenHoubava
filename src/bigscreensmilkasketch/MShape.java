@@ -3,7 +3,7 @@ package bigscreensmilkasketch;
 import processing.core.*;
 
 
-public class Note extends BigScreensMilkaSketch
+public class MShape extends BigScreensMilkaSketch
 {
 	int c;
 	float x;
@@ -12,7 +12,7 @@ public class Note extends BigScreensMilkaSketch
 	float h;
 	PApplet parent;
 	
-	Note(PApplet p, int t_c, float t_w, float t_h) {
+	MShape(PApplet p, int t_c, float t_w, float t_h) {
 	    parent = p;
 	    
 		c = t_c;
