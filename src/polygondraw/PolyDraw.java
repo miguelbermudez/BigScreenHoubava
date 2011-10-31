@@ -4,6 +4,7 @@ import processing.core.*;
 import geomerative.*;
 import toxi.geom.*;
 import toxi.color.*;
+import processing.opengl.*;
 
 //import java.util.Arrays.*;
 
@@ -33,7 +34,7 @@ public class PolyDraw extends PApplet {
 	 * --------------------------------------------------------------- */
 	public void setup() 
 	{
-		size(1200, 800);
+		size(1200, 800,OPENGL);
 		background(255);
 		smooth();
 		font = loadFont("Menlo-Regular-24.vlw");

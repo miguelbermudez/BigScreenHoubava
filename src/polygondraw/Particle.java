@@ -29,10 +29,10 @@ public class Particle extends Flocking {
 		
 		//debugging
 		//parent.fill(255,0,0);
-		//parent.ellipse(mPos.x, mPos.y, 5, 5);
+		parent.ellipse(mPos.x, mPos.y, 5, 5);
 		
-		mRs.draw();
-		
+		//mRs.draw();
+
 	}
 
 }

@@ -20,11 +20,11 @@ public class BigScreensMilkaSketch extends PApplet
 {
 	//MPE SETTINGS
 	public static float scale = 1f;
-	public static boolean MPE = false;
+	public static boolean MPE = true;
 	public static boolean local = true;
 
 	//CLIENT ID
-	int ID = 2;
+	int ID = 1;
 	TCPClient client;
 
 	public static int mWidth, mHeight;
