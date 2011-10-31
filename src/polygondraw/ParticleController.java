@@ -3,13 +3,17 @@ package polygondraw;
 import processing.core.*;
 //import geomerative.*;
 import toxi.geom.*;
+import toxi.math.MathUtils;
 
 import java.util.ArrayList;
 
 public class ParticleController 
 {
 	PApplet parent;
-	static ArrayList<Particle> mParticles = new ArrayList<Particle>();
+	//static ArrayList<FlockingObject> mParticles = new ArrayList<FlockingObject>();
+	ArrayList<FlockingObject> mParticles = new ArrayList<FlockingObject>();
+	int totalNumOfParticles;
+	float zoneRadius;
 	
 	ParticleController(PApplet p) 
 	{
@@ -17,71 +21,58 @@ public class ParticleController
 	}
 	
 	//------------------------------------------------------------
+	//TODO: implement apply force method. For example to add Perlin
+	//noise, wind, tonrado, etc. 
 	void applyForceToParticles( float zoneRadiusSqrd ) 
 	{
 		
-		for (int i = 0; i < mParticles.size(); i++) {
-			Particle p1 = mParticles.get(i);
-			
-			int j = i;
-			for( j++; j != mParticles.size(); j++) {
-				Particle p2 = mParticles.get(j);
-				Vec3D dir = p1.mPos.sub(p2.mPos);
-				float distSqrd = dir.magSquared();
-				
-				if (distSqrd <= zoneRadiusSqrd ) { // SEPARATION
-					float F = ( zoneRadiusSqrd / distSqrd - 1.0f) * 0.01f;
-					dir.normalize();
-					dir.scaleSelf(F);
-					
-					p1.mAcc.addSelf(dir);
-					p2.mAcc.subSelf(dir);
-				}
-			}			
-		}
+		
 	}
 	
 	
 	//------------------------------------------------------------
-	void pullToCenter ( Vec3D center )
+	void pullToCenter ( PVector center )
 	{
-		for (int i = 0; i < mParticles.size(); i++) {
-			Particle p = mParticles.get(i);
-			p.pullToCenter(center);
-		}
+		
 	}
-	
-	
-	//------------------------------------------------------------
-	void update ( boolean flatten ) 
-	{
-		for (int i = 0; i < mParticles.size(); i++) {
-			Particle p = mParticles.get(i);
-			p.update(flatten);
-		}
-	}
-	
+		
 	
 	//------------------------------------------------------------
 	void draw() 
 	{
-		for (int i = 0; i < mParticles.size(); i++) {
-			Particle p = mParticles.get(i);
-			p.draw();
-		}
+		//for (int i = 0; i < mParticles.size(); i++) {
+		
+		/* so far only way to speed up
+		 * animation is to skip particles. 
+		 * there is a way to check it's neighbors using a zone radius but i'm still
+		 * working on that.
+		 * BTW, it's slow because it's looping over EVERYTHING, EVERY SINGLE TIME
+		 * 
+		 */
+		for (int i = 0; i < totalNumOfParticles; i+=3) {	
 			
-	
+			Particle p1 = (Particle) mParticles.get(i);			
+			p1.flock(mParticles);
+			p1.update();
+			p1.borders();									
+			p1.draw();
+		}
 	}
 	
 	
 	//------------------------------------------------------------
+	//This doesn't do anything right now
 	void addParticles( int amt )
 	{
+		float randomLow = 50.0f;
+		float randomHigh = 250.0f;
+		
 		for (int i = 0; i < amt; i++) {
-			Vec3D pos =  Vec3D.randomVector().scale( parent.random(50.0f, 250.0f) );
-			Vec3D vel = Vec3D.randomVector().scale( 2.0f );
-			Particle p = new Particle( parent, pos, vel );
+
+			PVector randomPos = PVector.mult(PolyDraw.randomVector(), parent.random(randomLow, randomHigh));
+			Particle p = new Particle( parent, randomPos);
 			mParticles.add(p);
 		}
 	}
+	
 }

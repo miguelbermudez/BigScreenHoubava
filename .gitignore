@@ -36,3 +36,5 @@ Thumbs.db
 ##########
 data/*.mp3
 bin/*.mp3
+
+.DS_Store
