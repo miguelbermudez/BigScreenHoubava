@@ -61,5 +61,10 @@
 	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/mpe.jar"/>
 	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/base/commons-lang3-3.0-beta.jar"/>
 	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/base/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/user/toxiclibscore/toxiclibscore.jar"/>
+	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/user/colorutils/colorutils.jar"/>
+	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/user/geomerative/batikfont.jar"/>
+	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/user/geomerative/geomerative.jar"/>
+	<classpathentry kind="lib" path="/Users/mlm/Documents/eclipse/BigScreenHoubava/lib/base/opengl/opengl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
