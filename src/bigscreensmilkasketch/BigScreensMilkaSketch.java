@@ -10,7 +10,7 @@ import mpe.client.*;
 public class BigScreensMilkaSketch extends PApplet 
 {
 	//MPE SETTINGS
-	public static float scale = 3f;
+	public static float scale = 1f;
 	public static boolean MPE = true;
 	public static boolean local = true;
 
@@ -96,7 +96,7 @@ public class BigScreensMilkaSketch extends PApplet
 			String songData = cl.getDataMessage()[0];
 			viz.visualizeData(songData);
 		}
-	
+		ellipse(20,20,20,20);
 	  
 		frame_count++;
 	}

@@ -15,7 +15,7 @@ public class VizCircles extends Visualizer {
 	
 	public void visualizeData(String songDataString) {
 		float[] songData = getDataAsArray(songDataString);
-		streamsDraw(songData);
+		vDraw(songData);
 	}
 	
 	
