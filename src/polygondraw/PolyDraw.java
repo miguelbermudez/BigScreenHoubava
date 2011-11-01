@@ -1,9 +1,12 @@
 package polygondraw;
 
+import java.util.Random;
+
 import processing.core.*;
 import geomerative.*;
 import toxi.geom.*;
 import toxi.color.*;
+import toxi.math.*;
 import processing.opengl.*;
 
 //import java.util.Arrays.*;
@@ -11,11 +14,13 @@ import processing.opengl.*;
 
 public class PolyDraw extends PApplet {
 	
+	static Random RandomSeed = MathUtils.RND;
+	
 	RShape 		shp, polyshp, newShp, indivShp;
 	RPath 		indivPath;
 	RPoint[] 	indivPathPts;
 	
-	Vec3D		mEye, mCenter, mUp;
+	PVector		mEye, mCenter, mUp;
 	
 	ParticleController mParticleController;
 	PFont font;
@@ -24,6 +29,7 @@ public class PolyDraw extends PApplet {
 	boolean mCentralGravity;
 	boolean mFlatten;
 	int counter = 0;
+	int totalParticles = 0;
 	
 	static public void main(String args[]) {
 		PApplet.main(new String[] { "polygondraw.PolyDraw" });
@@ -34,13 +40,13 @@ public class PolyDraw extends PApplet {
 	 * --------------------------------------------------------------- */
 	public void setup() 
 	{
-		size(1200, 800,OPENGL);
+		size(1200, 800, OPENGL);
 		background(255);
-		smooth();
+		//smooth();
 		font = loadFont("Menlo-Regular-24.vlw");
 		textFont(font, 12);
 		
-		mCenter				= (Vec3D) Vec3D.ZERO;
+		mCenter				= new PVector(0,0);
 		mCentralGravity 	= false;
 		mFlatten 			= false;
 		mZoneRadius 		= 30.0f;
@@ -51,6 +57,7 @@ public class PolyDraw extends PApplet {
 		RG.init(this);
 		shp = RG.loadShape("kalojan_outline.svg");
 		shp.centerIn(g); //fit in window
+		shp.translate(width/2, height/2); 	//move shp to center of screen
 		polyshp = shp.children[2]; //get the crazy one
 		
 		//pointPaths = polyshp.getPointsInPaths();
@@ -63,18 +70,19 @@ public class PolyDraw extends PApplet {
 			RPoint centroid = rs.getCentroid();
 			RStyle style = rs.getStyle();
 			TColor c = TColor.newARGB(style.fillColor);
-			Vec3D pos = new Vec3D(centroid.x, centroid.y, 0);
-			Vec3D vel = Vec3D.randomVector().scale( 2.0f );
+			PVector pos = new PVector(centroid.x, centroid.y, 0);
 			
-			Particle p = new Particle(this, pos, vel);
+			Particle p = new Particle(this, pos);
 			p.mRs = rs;
 			p.mColor = c;
 			
-			ParticleController.mParticles.add(p);
+			mParticleController.mParticles.add(p);
 		}
 		
 		//println(ParticleController.mParticles.size()); //debugging
-		
+		totalParticles = mParticleController.mParticles.size();
+		mParticleController.totalNumOfParticles = totalParticles;
+				
 	}
 
 	/* DRAW
@@ -84,26 +92,23 @@ public class PolyDraw extends PApplet {
 		background(255);
 		fill(0);
 		frameRateStr = Float.toString(round(frameRate));
-		text(frameRateStr, 25, 25);
+		text((frameRateStr + "\n" + totalParticles + " PARTICLES"), 25, 25);
 		
-		translate(width/2, height/2);
-				
-		noStroke(); 
-		
-		mParticleController.applyForceToParticles( mZoneRadius * mZoneRadius );
-		if (mCentralGravity) mParticleController.pullToCenter(mCenter);
-		mParticleController.update(mFlatten);
-		
+		noStroke();
+	
 		//draw Particles
-		mParticleController.draw();
-			
-		
+		mParticleController.draw();	
 	}
 	
 	
 	/* METHODS
 	 *  ---------------------------------------------------------------- */
-	
+	static public PVector randomVector()
+	{
+		Vec3D randomVector = Vec3D.randomVector(PolyDraw.RandomSeed);
+		return new PVector(randomVector.x, randomVector.y);
+
+	}
 	      	
 
 }
