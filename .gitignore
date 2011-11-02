@@ -27,7 +27,7 @@
 
 # OS generated files #
 ######################
-.DS_Store?
+.DS_Store
 ehthumbs.db
 Icon?
 Thumbs.db
@@ -36,3 +36,4 @@ Thumbs.db
 ##########
 data/*.mp3
 bin/*.mp3
+*classpath

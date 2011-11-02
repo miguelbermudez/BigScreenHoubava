@@ -74,7 +74,7 @@ public class PolyDraw extends PApplet {
 			
 			Particle p = new Particle(this, pos);
 			p.mRs = rs;
-			p.mColor = c;
+			p.setmColor(c);
 			
 			mParticleController.mParticles.add(p);
 		}

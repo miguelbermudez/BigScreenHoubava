@@ -12,9 +12,9 @@ import processing.core.*;
 public class FlockingObject 
 {
 	PApplet parent;
-	PVector location;
-	PVector velocity;
-	PVector acceleration;
+	public PVector location;
+	public PVector velocity;
+	public PVector acceleration;
 	float 	r;
 	float 	maxforce;
 	float 	maxspeed;
@@ -41,7 +41,7 @@ public class FlockingObject
 	
 	//------------------------------------------------------------
 	// Method to update location
-	void update() 
+	public void update() 
 	{
 		// Update velocity
 	    velocity.add(acceleration);

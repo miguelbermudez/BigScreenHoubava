@@ -12,9 +12,9 @@ public class Particle extends FlockingObject implements Flocking {
 
 	PApplet parent;
 	RShape mRs;
-	TColor mColor;
+	private TColor mColor;
 	
-	Particle(PApplet p, PVector pos) 
+	public Particle(PApplet p, PVector pos) 
 	{
 		
 		super(p, pos);
@@ -23,21 +23,22 @@ public class Particle extends FlockingObject implements Flocking {
 	
 	
 	//------------------------------------------------------------
-	void draw() 
+	public void draw() 
 	{
 		
 		//draw directions
 		//super.draw();
-		
+		/*
 		RMatrix mat = new RMatrix();
 		mat.translate(-mRs.getTopLeft().x, -mRs.getTopLeft().y);
 		mat.translate(this.location.x, this.location.y);
 		
 		mRs.transform(mat);
-		
+		*/
 		//debugging
 		//parent.fill(255,0,0);
-		parent.fill(mColor.toARGB());
+		//parent.fill(getmColor().toARGB());
+		parent.fill(255,0,0);
 		parent.ellipse(this.location.x, this.location.y, 8, 8);
 		
 
@@ -48,7 +49,7 @@ public class Particle extends FlockingObject implements Flocking {
 	
 	//------------------------------------------------------------
 	// Wraparound
-	void borders() 
+	public void borders() 
 	{
 		if (location.x < -r) location.x = parent.width+r;
 	    if (location.y < -r) location.y = parent.height+r;
@@ -174,6 +175,16 @@ public class Particle extends FlockingObject implements Flocking {
 	
 	    return steer;
     }
+
+
+	public void setmColor(TColor mColor) {
+		this.mColor = mColor;
+	}
+
+
+	public TColor getmColor() {
+		return mColor;
+	}
 
 
 }

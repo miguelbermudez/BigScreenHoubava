@@ -63,12 +63,13 @@ public class MMViz_v1 extends Visualizer {
 	}
 	
 	public void localDraw(float[] songData) {
-		parent.background(0,0,100);		
+		parent.background(255);		
 		for(int i = 0; i < songData.length; i++)
 		{
 				Particle p1 = (Particle) particleSystem.particles.get(i);	
 				//p1.setVelocity(new processing.core.PVector(songData[i],songData[i]));
-				p1.update();
+				p1.update(new processing.core.PVector(songData[i],parent.random(-1,1)));
+				//p1.update();
 				p1.seek(new processing.core.PVector(BigScreensMilkaSketch.mWidth,BigScreensMilkaSketch.mHeight/2,0));
 				particleSystem.flock(p1);									
 				parent.fill(255,0,0,songData[i]*30);

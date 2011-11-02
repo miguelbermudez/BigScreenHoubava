@@ -11,11 +11,11 @@ public class ParticleController
 {
 	PApplet parent;
 	//static ArrayList<FlockingObject> mParticles = new ArrayList<FlockingObject>();
-	ArrayList<FlockingObject> mParticles = new ArrayList<FlockingObject>();
-	int totalNumOfParticles;
+	public ArrayList<FlockingObject> mParticles = new ArrayList<FlockingObject>();
+	public int totalNumOfParticles;
 	float zoneRadius;
 	
-	ParticleController(PApplet p) 
+	public ParticleController(PApplet p) 
 	{
 		parent = p;
 	}
@@ -38,7 +38,7 @@ public class ParticleController
 		
 	
 	//------------------------------------------------------------
-	void draw() 
+	public void draw() 
 	{
 		//for (int i = 0; i < mParticles.size(); i++) {
 		

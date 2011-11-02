@@ -71,9 +71,7 @@ public class audioPlayer extends BigScreensMilkaSketch {
 	 *  ---------------------------------------------------------------- */
 	public void stop() 
 	{
-		// the AudioPlayer you got from Minim.loadFile()
 		song.close();
-		// the AudioInput you got from Minim.getLineIn()
 		input.close();
 		minim.stop();
 		super.stop();

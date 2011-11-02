@@ -14,7 +14,7 @@ public class BigScreensMilkaSketch extends PApplet
 	public static boolean local = true;
 
 	//CLIENT ID
-	int ID = 2;
+	int ID = 0;
 	TCPClient client;
 
 	public static int mWidth, mHeight;
