@@ -13,7 +13,12 @@ public class VizCircles extends Visualizer {
 	private ArrayList<MShape> shapes = new ArrayList<MShape>();
 	private int circColor = color(255,50,50);
 	
-	public void visualizeData(String songDataString) {
+	public void vizSetup(){
+		
+		
+	}
+	
+	public void vizDraw(String songDataString) {
 		float[] songData = getDataAsArray(songDataString);
 		vDraw(songData);
 	}

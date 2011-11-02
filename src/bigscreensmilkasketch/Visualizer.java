@@ -11,6 +11,15 @@ public class Visualizer extends PApplet {
 		parent = p;		
 	}
 	
+	public void vizSetup() {
+		
+	}
+	
+	public void vizDraw(){
+		
+		
+	}
+	
 	public float[] getDataAsArray(String songData) {
 		float[] data = parseFloat(StringUtils.split(songData,","));
 		return data;

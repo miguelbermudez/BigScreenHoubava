@@ -2,7 +2,6 @@ package bigscreensmilkasketch;
 
 import processing.core.*;
 import java.util.ArrayList;
-
 import org.apache.commons.lang3.StringUtils;
 
 import mpe.client.*;
@@ -15,15 +14,15 @@ public class BigScreensMilkaSketch extends PApplet
 	public static boolean local = true;
 
 	//CLIENT ID
-	int ID = 0;
+	int ID = 2;
 	TCPClient client;
 
 	public static int mWidth, mHeight;
 
 	int frame_count = 0;
 	boolean playing = true;
-	VizCircles viz = new VizCircles(this);
-	
+	MMViz_v1 viz = new MMViz_v1(this);
+	//VizCircles viz = new VizCircles(this);
 
 	
 	static public void main(String args[]) {
@@ -66,7 +65,7 @@ public class BigScreensMilkaSketch extends PApplet
 
 		smooth();
 		frameRate(20);
-				
+		viz.vizSetup();	
 		
 	}
 
@@ -91,12 +90,11 @@ public class BigScreensMilkaSketch extends PApplet
 		if (!MPE) {
 			scale(scale);
 		}
-		
 		if (cl.messageAvailable()) {
 			String songData = cl.getDataMessage()[0];
-			viz.visualizeData(songData);
+			viz.vizDraw(songData);
+			System.out.println("receiving");
 		}
-		ellipse(20,20,20,20);
 	  
 		frame_count++;
 	}
