@@ -5,40 +5,33 @@ import processing.core.*;
 import toxi.geom.*;
 import toxi.math.MathUtils;
 
+import geomerative.RPoint;
+
 import java.util.ArrayList;
 
 public class ParticleController 
 {
-	PApplet parent;
-	//static ArrayList<FlockingObject> mParticles = new ArrayList<FlockingObject>();
-	ArrayList<FlockingObject> mParticles = new ArrayList<FlockingObject>();
-	int totalNumOfParticles;
-	float zoneRadius;
+	private PApplet parent;
 	
-	ParticleController(PApplet p) 
+	
+	public ArrayList mParticles = new ArrayList();
+	public int totalNumOfParticles;
+	
+	public ParticleController(PApplet p) 
 	{
 		parent = p;
 	}
 	
-	//------------------------------------------------------------
-	//TODO: implement apply force method. For example to add Perlin
-	//noise, wind, tonrado, etc. 
-	void applyForceToParticles( float zoneRadiusSqrd ) 
+	public void seekToTarget( PVector target )
 	{
-		
-		
+		for (int i = 0; i < totalNumOfParticles; i++) {
+			Particle p = (Particle) mParticles.get(i);
+			p.applyForce(p.seek(target));
+		}
 	}
 	
-	
 	//------------------------------------------------------------
-	void pullToCenter ( PVector center )
-	{
-		
-	}
-		
-	
-	//------------------------------------------------------------
-	void draw() 
+	public void draw() 
 	{
 		//for (int i = 0; i < mParticles.size(); i++) {
 		
@@ -61,18 +54,14 @@ public class ParticleController
 	
 	
 	//------------------------------------------------------------
-	//This doesn't do anything right now
-	void addParticles( int amt )
+	public void drawInitalPosition()
 	{
-		float randomLow = 50.0f;
-		float randomHigh = 250.0f;
-		
-		for (int i = 0; i < amt; i++) {
-
-			PVector randomPos = PVector.mult(PolyDraw.randomVector(), parent.random(randomLow, randomHigh));
-			Particle p = new Particle( parent, randomPos);
-			mParticles.add(p);
+		for (int i = 0; i < totalNumOfParticles; i++) {	
+			
+			Particle p1 = (Particle) mParticles.get(i);
+			p1.draw();
 		}
 	}
+	
 	
 }

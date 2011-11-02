@@ -1,7 +1,5 @@
 package polygondraw;
 
-import java.util.Random;
-
 import processing.core.*;
 import geomerative.*;
 import toxi.geom.*;
@@ -9,14 +7,10 @@ import toxi.color.*;
 import toxi.math.*;
 import processing.opengl.*;
 
-//import java.util.Arrays.*;
-
 
 public class PolyDraw extends PApplet {
 	
-	static Random RandomSeed = MathUtils.RND;
-	
-	RShape 		shp, polyshp, newShp, indivShp;
+	RShape 		shp, polyshp;
 	RPath 		indivPath;
 	RPoint[] 	indivPathPts;
 	
@@ -25,9 +19,6 @@ public class PolyDraw extends PApplet {
 	ParticleController mParticleController;
 	PFont font;
 	String frameRateStr;
-	float mZoneRadius;
-	boolean mCentralGravity;
-	boolean mFlatten;
 	int counter = 0;
 	int totalParticles = 0;
 	
@@ -45,11 +36,7 @@ public class PolyDraw extends PApplet {
 		//smooth();
 		font = loadFont("Menlo-Regular-24.vlw");
 		textFont(font, 12);
-		
-		mCenter				= new PVector(0,0);
-		mCentralGravity 	= false;
-		mFlatten 			= false;
-		mZoneRadius 		= 30.0f;
+
 		mParticleController = new ParticleController(this);
 	
 		
@@ -59,11 +46,7 @@ public class PolyDraw extends PApplet {
 		shp.centerIn(g); //fit in window
 		shp.translate(width/2, height/2); 	//move shp to center of screen
 		polyshp = shp.children[2]; //get the crazy one
-		
-		//pointPaths = polyshp.getPointsInPaths();
-		//indivShp = polyshp.children[counter];		
-		//println("crazy children: "+ polyshp.countChildren()); //debugging
-		
+				
 		for (int i = 0; i < polyshp.countChildren()-1; i++) {
 			RShape rs = polyshp.children[i];
 			//println("#"+i+" "+rs.getPoints().length); //debugging
@@ -97,18 +80,12 @@ public class PolyDraw extends PApplet {
 		noStroke();
 	
 		//draw Particles
+		//mParticleController.seekToTarget(new PVector(mouseX, mouseY));
 		mParticleController.draw();	
 	}
 	
 	
 	/* METHODS
-	 *  ---------------------------------------------------------------- */
-	static public PVector randomVector()
-	{
-		Vec3D randomVector = Vec3D.randomVector(PolyDraw.RandomSeed);
-		return new PVector(randomVector.x, randomVector.y);
-
-	}
-	      	
+	 *  ---------------------------------------------------------------- */	
 
 }

@@ -8,17 +8,23 @@ import geomerative.*;
 import toxi.geom.*;
 import toxi.color.*;
 
-public class Particle extends FlockingObject implements Flocking {
+public class Particle extends FlockingObject {
 
-	PApplet parent;
-	RShape mRs;
-	TColor mColor;
+	public RShape mRs;
+	public TColor mColor;
+	public int mGroup;
 	
-	Particle(PApplet p, PVector pos) 
+	private PApplet parent;
+	
+	public Particle(PApplet p, PVector pos) 
 	{
 		
 		super(p, pos);
-		parent = p; 
+		parent = p;
+		
+		mGroup = 0;
+		mColor = (TColor) TColor.MAGENTA;
+		 
 	}
 	
 	
@@ -29,20 +35,32 @@ public class Particle extends FlockingObject implements Flocking {
 		//draw directions
 		//super.draw();
 		
-		RMatrix mat = new RMatrix();
-		mat.translate(-mRs.getTopLeft().x, -mRs.getTopLeft().y);
-		mat.translate(this.location.x, this.location.y);
+		//RMatrix mat = new RMatrix();
+		//mat.translate(-mRs.getTopLeft().x, -mRs.getTopLeft().y);
+		//mat.translate(this.getLocation().x, this.getLocation().y);
 		
-		mRs.transform(mat);
-		
-		//debugging
-		//parent.fill(255,0,0);
-		parent.fill(mColor.toARGB());
-		parent.ellipse(this.location.x, this.location.y, 8, 8);
-		
+		//mRs.transform(mat);
 
 		//mRs.draw();
-
+		
+		//debugging
+		parent.fill(mColor.toARGB());
+		parent.ellipse(this.getLocation().x, this.getLocation().y, 4, 4);
+		
+		//debugging flocking
+		// Draw a triangle rotated in the direction of velocity
+		//float theta = velocity.heading2D() + parent.radians(90);
+		//parent.fill(175);
+		//parent.stroke(0);
+		//parent.pushMatrix();
+		//    parent.translate(getLocation().x,getLocation().y);
+		//    parent.rotate(theta);
+		//    parent.beginShape(parent.TRIANGLES);
+		//    parent.vertex(0, -r*2);
+		//    parent.vertex(-r, r*2);
+		//    parent.vertex(r, r*2);
+		//    parent.endShape();
+		//parent.popMatrix();
 	}
 	
 	
@@ -50,15 +68,15 @@ public class Particle extends FlockingObject implements Flocking {
 	// Wraparound
 	void borders() 
 	{
-		if (location.x < -r) location.x = parent.width+r;
-	    if (location.y < -r) location.y = parent.height+r;
-	    if (location.x > parent.width+r) location.x = -r;
-	    if (location.y > parent.height+r) location.y = -r;
+		if (getLocation().x < -r) getLocation().x = parent.width+r;
+	    if (getLocation().y < -r) getLocation().y = parent.height+r;
+	    if (getLocation().x > parent.width+r) getLocation().x = -r;
+	    if (getLocation().y > parent.height+r) getLocation().y = -r;
     }
 
 	
 	//------------------------------------------------------------
-	public void flock(ArrayList<FlockingObject> flock) 
+	public void flock(ArrayList<Particle> flock) 
 	{
 		PVector sep = separate(flock);
 		PVector ali = align(flock);
@@ -76,18 +94,18 @@ public class Particle extends FlockingObject implements Flocking {
 	
 	
 	//------------------------------------------------------------
-	public PVector separate(ArrayList<FlockingObject> flock) 
+	public PVector separate(ArrayList<Particle> flock) 
 	{
 		float desiredseparation = 25.0f;
 	    PVector steer = new PVector(0,0,0);
 	    int count = 0;
 	    // For every boid in the system, check if it's too close
-	    for (FlockingObject other : flock) {
-	    	float d = PVector.dist(location,other.location);
+	    for (Particle other : flock) {
+	    	float d = PVector.dist(getLocation(),other.getLocation());
 	    	// If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
 	    	if ((d > 0) && (d < desiredseparation)) {
 	    		// Calculate vector pointing away from neighbor
-	    		PVector diff = PVector.sub(location,other.location);
+	    		PVector diff = PVector.sub(getLocation(),other.getLocation());
 	    		diff.normalize();
 	    		diff.div(d);        // Weight by distance
 	    		steer.add(diff);
@@ -112,12 +130,12 @@ public class Particle extends FlockingObject implements Flocking {
 	
 	
 	//------------------------------------------------------------
-	public PVector align(ArrayList<FlockingObject> flock) {
+	public PVector align(ArrayList<Particle> flock) {
 		float neighbordist = 50;
 		  PVector sum = new PVector(0,0);
 		  int count = 0;
 		  for (FlockingObject other : flock) {
-			  float d = PVector.dist(location,other.location);
+			  float d = PVector.dist(getLocation(),other.getLocation());
 			  if ((d > 0) && (d < neighbordist)) {
 				  sum.add(other.velocity);
 				  count++;
@@ -138,14 +156,14 @@ public class Particle extends FlockingObject implements Flocking {
 	}
 
 	//------------------------------------------------------------
-	public PVector cohesion(ArrayList<FlockingObject> flock) {
+	public PVector cohesion(ArrayList<Particle> flock) {
 		float neighbordist = 50;
 	    PVector sum = new PVector(0,0);   // Start with empty vector to accumulate all locations
 	    int count = 0;
-	    for (FlockingObject other : flock) {
-	    	float d = PVector.dist(location,other.location);
+	    for (Particle other : flock) {
+	    	float d = PVector.dist(getLocation(),other.getLocation());
 	    	if ((d > 0) && (d < neighbordist)) {
-	    		sum.add(other.location); // Add location
+	    		sum.add(other.getLocation()); // Add location
 	    		count++;
 	    	}
 	    }
@@ -164,7 +182,7 @@ public class Particle extends FlockingObject implements Flocking {
 	// STEER = DESIRED MINUS VELOCITY
 	public PVector seek(PVector target) 
 	{
-		PVector desired = PVector.sub(target,location);  // A vector pointing from the location to the target
+		PVector desired = PVector.sub(target,getLocation());  // A vector pointing from the location to the target
 	    // Normalize desired and scale to maximum speed
 	    desired.normalize();
 	    desired.mult(maxspeed);
@@ -174,6 +192,5 @@ public class Particle extends FlockingObject implements Flocking {
 	
 	    return steer;
     }
-
 
 }
