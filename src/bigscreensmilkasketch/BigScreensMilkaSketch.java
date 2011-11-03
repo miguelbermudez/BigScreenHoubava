@@ -1,31 +1,58 @@
 package bigscreensmilkasketch;
 
 import processing.core.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.apache.commons.lang3.StringUtils;
 
 import mpe.client.*;
 
 public class BigScreensMilkaSketch extends PApplet 
 {
+	
+	public static HashMap<String,String> configVars = new HashMap<String, String>();
+	
 	//MPE SETTINGS
 	public static float scale = 1f;
 	public static boolean MPE = true;
 	public static boolean local = true;
 
-	//CLIENT ID
-	int ID = 0;
+	static //CLIENT ID
+	int ID;
 	TCPClient client;
 
 	public static int mWidth, mHeight;
 
 	int frame_count = 0;
 	boolean playing = true;
-	MMViz_v1 viz = new MMViz_v1(this);
-	//VizCircles viz = new VizCircles(this);
+	//MMViz_v1 viz = new MMViz_v1(this);
+	VizCircles viz = new VizCircles(this);
 
 	
 	static public void main(String args[]) {
+		String configFileName;
+		if (args.length>1) {
+			configFileName =args[1];
+		} else {
+			configFileName = "config.txt";			
+		}
+		
+		try {
+			getConfig(configFileName);
+			ID = Integer.parseInt(configVars.get("screen"));
+			MPE = configVars.get("mpe") != null;
+			local = configVars.get("local") != null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		if (local) {
 			PApplet.main(new String[] { "bigscreensmilkasketch.BigScreensMilkaSketch" });
 		} else {
@@ -99,6 +126,21 @@ public class BigScreensMilkaSketch extends PApplet
 		frame_count++;
 	}
 	
-
+	public static void getConfig(String fileName) throws IOException {
+		/* Get static configuration variables from config.txt */
+		File configFile = new File("configuration/"+fileName);
+		BufferedReader br = new BufferedReader(new FileReader(configFile));
+		try {
+			String word = null;
+			while ((word=br.readLine())!=null){	
+				String[] pair = word.split("=");
+				configVars.put(pair[0], pair[1]);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("can't find file at configuration/config.txt");
+			e.printStackTrace();
+		}
+		
+	}
 
 }
