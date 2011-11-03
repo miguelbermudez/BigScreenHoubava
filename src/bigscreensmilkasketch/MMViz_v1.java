@@ -16,8 +16,6 @@ public class MMViz_v1 extends Visualizer {
 		super(p);
 	}
 	
-	static Random RandomSeed = MathUtils.RND;
-	
 	processing.core.PVector		mEye, mCenter, mUp;
 	
 	ParticleSystem particleSystem;
