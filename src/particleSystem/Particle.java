@@ -43,6 +43,7 @@ public class Particle  {
 	    acceleration.mult(0);
     }
 	
+	//------------------------------------------------------------
 	// Method that updates location with a new acceleration
 	public void update(PVector a) 
 	{
@@ -53,6 +54,8 @@ public class Particle  {
 	    acceleration.mult(0);
     }
 	
+	
+	//------------------------------------------------------------
 	public void seek(PVector target) {
 		acceleration.add(steer(target));
 	  }
@@ -62,7 +65,7 @@ public class Particle  {
 	// STEER = DESIRED MINUS VELOCITY
 	public PVector steer(PVector target) 
 	{
-		PVector desired = PVector.sub(target,getLocation());  // A vector pointing from the location to the target
+		PVector desired = PVector.sub(target, getLocation());  // A vector pointing from the location to the target
 	    // Normalize desired and scale to maximum speed
 	    desired.normalize();
 	    desired.mult(maxspeed);
@@ -72,6 +75,24 @@ public class Particle  {
 	
 	    return steer;
     }
+	
+	
+	//------------------------------------------------------------
+	public void arrive(PVector target)
+	{
+		PVector desired = PVector.sub(target, getLocation());
+		float d = desired.mag();
+		
+		desired.normalize();
+		if(d < 100) desired.mult(maxspeed*(d/100));
+		else desired.mult(maxspeed);
+		
+		PVector steer = PVector.sub(desired, velocity);
+		steer.limit(maxforce);
+		applyForce(steer);
+	}
+	
+	
 	//------------------------------------------------------------
 	public void setLocation(PVector location) {
 		this.location = location;
