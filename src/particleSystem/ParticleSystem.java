@@ -6,8 +6,7 @@ import processing.core.*;
 
 public class ParticleSystem {
 	
-	private PApplet parent;
-	
+	private PApplet parent;	
 	
 	public ArrayList<Particle> particles = new ArrayList<Particle>();
 	public int totalNumOfParticles;

@@ -33,7 +33,8 @@ public class BigScreensMilkaSketch extends PApplet
 	int frame_count = 0;
 	boolean playing = true;
 	//MMViz_v1 viz = new MMViz_v1(this);
-	VizCircles viz = new VizCircles(this);
+	//VizCircles viz = new VizCircles(this);
+	PhylloSpiralViz viz = new PhylloSpiralViz(this);
 
 	
 	static public void main(String args[]) {
@@ -92,6 +93,7 @@ public class BigScreensMilkaSketch extends PApplet
 
 		smooth();
 		frameRate(20);
+		viz.setOrigin( new PVector( 40, (mHeight/2) ) );
 		viz.vizSetup();	
 		
 	}
@@ -120,7 +122,7 @@ public class BigScreensMilkaSketch extends PApplet
 		if (cl.messageAvailable()) {
 			String songData = cl.getDataMessage()[0];
 			viz.vizDraw(songData);
-			System.out.println("receiving");
+			//System.out.println("receiving");
 		}
 	  
 		frame_count++;

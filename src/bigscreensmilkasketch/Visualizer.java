@@ -29,6 +29,5 @@ public class Visualizer extends PApplet {
 		float[] data = parseFloat(StringUtils.split(songData,","));
 		return data;
 	}
-	
 
 }

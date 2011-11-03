@@ -19,13 +19,13 @@ public class Particle  {
 		acceleration = new PVector(0,0);
 	    velocity = new PVector(parent.random(0,1),parent.random(0,1));
 	    setLocation(pos);
-	    r = 2.0f;
-	    maxspeed = 3f;
-	    maxforce = 0.05f;
+	    r = 3.0f;
+	    maxspeed = 4f;
+	    maxforce = 0.1f;
 	}
 	
 	//------------------------------------------------------------
-	void applyForce(PVector force) 
+	public void applyForce(PVector force) 
 	{
 		// We could add mass here if we want A = F / M
 	    acceleration.add(force);
@@ -93,6 +93,7 @@ public class Particle  {
 	}
 	
 	
+	//GETTERS AND SETTERS
 	//------------------------------------------------------------
 	public void setLocation(PVector location) {
 		this.location = location;
@@ -116,6 +117,14 @@ public class Particle  {
 	
 	public float getMaxForce() {
 		return maxforce;
+	}
+	
+	//------------------------------------------------------------
+	public float direction()
+	{
+		float theta = velocity.heading2D() + PApplet.radians(90);
+		return theta;
+		
 	}
 
 }
