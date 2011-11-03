@@ -44,14 +44,14 @@ public class VectorLoader {
 		for(RPoint rp : all_RPoints) {
 			PVector pos = new PVector(rp.x, rp.y);
 			allPoints.add(pos);
-			parent.println("allPoints: " + allPoints.size());  //sanity check
+			//parent.println("allPoints: " + allPoints.size());  //sanity check
 		}
 		
 		//populate allHandlePoints PVector list
 		for(RPoint rp : all_RHandles) {
 			PVector pos = new PVector(rp.x, rp.y);
 			allHandlePoints.add(pos);
-			parent.println("allHandlePoints: " + allHandlePoints.size());  //sanity check
+			//parent.println("allHandlePoints: " + allHandlePoints.size());  //sanity check
 		}
 	}
 	

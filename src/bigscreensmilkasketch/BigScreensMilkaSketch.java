@@ -21,8 +21,8 @@ public class BigScreensMilkaSketch extends PApplet
 	
 	//MPE SETTINGS
 	public static float scale = 1f;
-	public static boolean MPE = true;
-	public static boolean local = true;
+	public static boolean MPE;
+	public static boolean local;
 
 	static //CLIENT ID
 	int ID;
@@ -32,15 +32,13 @@ public class BigScreensMilkaSketch extends PApplet
 
 	int frame_count = 0;
 	boolean playing = true;
-	//MMViz_v1 viz = new MMViz_v1(this);
-	//VizCircles viz = new VizCircles(this);
-	PhylloSpiralViz viz = new PhylloSpiralViz(this);
+	ForegroundSketch viz = new ForegroundSketch(this);
 
 	
 	static public void main(String args[]) {
 		String configFileName;
-		if (args.length>1) {
-			configFileName =args[1];
+		if (args.length>0) {
+			configFileName =args[0];
 		} else {
 			configFileName = "config.txt";			
 		}
@@ -93,9 +91,7 @@ public class BigScreensMilkaSketch extends PApplet
 
 		smooth();
 		frameRate(20);
-		viz.setOrigin( new PVector( 40, (mHeight/2) ) );
 		viz.vizSetup();	
-		
 	}
 
 	/* DRAW
@@ -122,7 +118,8 @@ public class BigScreensMilkaSketch extends PApplet
 		if (cl.messageAvailable()) {
 			String songData = cl.getDataMessage()[0];
 			viz.vizDraw(songData);
-			//System.out.println("receiving");
+		} else {
+			System.out.println("not receiving");	
 		}
 	  
 		frame_count++;

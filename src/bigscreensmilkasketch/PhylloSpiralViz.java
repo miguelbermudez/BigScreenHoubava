@@ -24,7 +24,7 @@ public class PhylloSpiralViz extends Visualizer {
 	private ParticleSystem particleSystem;
 
 	//Enivonmental Forces
-	private boolean GRAVITY = true;
+	private boolean GRAVITY = false;
 	private PVector gravity;
 	
 	public PhylloSpiralViz(PApplet p) {
@@ -33,6 +33,7 @@ public class PhylloSpiralViz extends Visualizer {
 		spacing = 8;
 		num = 1024;
 		gravity = new PVector(0f, 0.5f);
+		origin = new PVector(BigScreensMilkaSketch.mWidth/2,BigScreensMilkaSketch.mHeight/2);
 	}
 	
 	
