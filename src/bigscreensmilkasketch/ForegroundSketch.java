@@ -26,7 +26,7 @@ public class ForegroundSketch extends Visualizer {
 	private ArrayList<PVector> vectorHandles;
 	
 	private String svgDir = "svg_files/";
-	private String[] svgs = {svgDir+"box.svg",svgDir+"kalojan_outline.svg"};
+	private String[] svgs = {"box.svg","kalojan_outline.svg"};
 	
 	private HashMap<Integer,ArrayList<PVector>> targetMap = new HashMap<Integer,ArrayList<PVector>>();
 	private int targetIndex = 0;
@@ -58,7 +58,7 @@ public class ForegroundSketch extends Visualizer {
 		targetMap.put(0,spiralCords);
 
 		for (int i=0;i<svgs.length;i++) {
-			ArrayList<PVector> newPts = attachNewTargetArray(svgs[i]);
+			ArrayList<PVector> newPts = attachNewTargetArray(svgDir+svgs[i]);
 			targetMap.put(i+1, newPts);
 		}
 	}
@@ -86,11 +86,11 @@ public class ForegroundSketch extends Visualizer {
 			for (int i=0;i<num;i++) {
 	
 				Particle star = starSystem.particles.get(i);
-				int sizeBoost = 2;
+				int starSize = 10;
 				int alphaBoost = 30;
 				float songVal = songData[i%512];
 				parent.fill(255,songVal*alphaBoost);
-				parent.ellipse(star.getLocation().x, star.getLocation().y, sizeBoost, sizeBoost);	
+				parent.ellipse(star.getLocation().x, star.getLocation().y, starSize, starSize);	
 				
 				Particle p1 = particleSystem.particles.get(i);
 				PVector target = targetMap.get(targetIndex).get(i);
@@ -164,8 +164,8 @@ public class ForegroundSketch extends Visualizer {
 		    
 		    float x = radius * parent.cos(theta);
 		    float y = radius * parent.sin(theta);
-		    
-		    PVector pv = new PVector( (p.getLocation().x + x), (p.getLocation().y + y) );
+		    int more = 100;
+		    PVector pv = new PVector( (p.getLocation().x + x*more), (p.getLocation().y + y*more) );
 		    spiralCords.add(pv);
 		}
 			

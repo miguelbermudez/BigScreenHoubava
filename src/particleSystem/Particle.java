@@ -20,8 +20,8 @@ public class Particle  {
 	    velocity = new PVector(parent.random(0,1),parent.random(0,1));
 	    setLocation(pos);
 	    r = 3.0f;
-	    maxspeed = 4f;
-	    maxforce = 0.1f;
+	    maxspeed = 100f;
+	    maxforce = 0.4f;
 	}
 	
 	//------------------------------------------------------------

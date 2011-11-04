@@ -7,10 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.commons.lang3.StringUtils;
 
 import mpe.client.*;
 
@@ -46,8 +43,8 @@ public class BigScreensMilkaSketch extends PApplet
 		try {
 			getConfig(configFileName);
 			ID = Integer.parseInt(configVars.get("screen"));
-			MPE = configVars.get("mpe") != null;
-			local = configVars.get("local") != null;
+			MPE = Boolean.parseBoolean(configVars.get("mpe"));
+			local = Boolean.parseBoolean(configVars.get("local"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -106,8 +103,7 @@ public class BigScreensMilkaSketch extends PApplet
 
 		if(!MPE) {
 			frameEvent(null);
-		}
-		
+		}		
 	}
 		
 	public void frameEvent(TCPClient cl) 
