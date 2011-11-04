@@ -1,7 +1,9 @@
 package bigscreensmilkasketch;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 import particleSystem.Particle;
 import particleSystem.ParticleSystem;
@@ -26,7 +28,7 @@ public class ForegroundSketch extends Visualizer {
 	private ArrayList<PVector> vectorHandles;
 	
 	private String svgDir = "svg_files/";
-	private String[] svgs = {"box.svg","kalojan_outline.svg"};
+	private ArrayList<String> svgs = new ArrayList<String>();
 	
 	private HashMap<Integer,ArrayList<PVector>> targetMap = new HashMap<Integer,ArrayList<PVector>>();
 	private int targetIndex = 0;
@@ -43,6 +45,17 @@ public class ForegroundSketch extends Visualizer {
 		spacing = 8;
 		num = 1024;
 		gravity = new PVector(0f, 0.5f);
+		
+		//Hacky hack hack to get all svg files
+		Properties prop = System.getProperties();
+		String path = prop.getProperty("java.class.path", null).split(":")[0].split("lib/")[0];
+		System.out.println(path+"svg_files");
+		File dir = new File(path+"svg_files");
+		
+		for (String f:dir.list()){
+			System.out.println(f);
+			svgs.add(f);
+		}
 	}
 	
 	
@@ -55,10 +68,12 @@ public class ForegroundSketch extends Visualizer {
 		particleSystem = initParticles(num,false);
 		createSprial(particleSystem);
 		
+		//the first set of target points is spiralCords
 		targetMap.put(0,spiralCords);
-
-		for (int i=0;i<svgs.length;i++) {
-			ArrayList<PVector> newPts = attachNewTargetArray(svgDir+svgs[i]);
+		
+		//create a new set of target points for each svg stored
+		for (int i=0;i<svgs.size();i++) {
+			ArrayList<PVector> newPts = attachNewTargetArray(svgDir+svgs.get(i));
 			targetMap.put(i+1, newPts);
 		}
 	}
@@ -78,11 +93,13 @@ public class ForegroundSketch extends Visualizer {
 			songSum+=songData[i];
 		}
 		
+		//gets a new set of particle targets every time a frequency limit gets hit
 		if (songSum>freqLimit&&targetIndex<targetMap.size()-1){
 			targetIndex++;	
 			freqLimit+=200;
 		}
-		if (songSum>0) {
+		
+		if (songSum>0) { //this will stop the drawing when the song stops; for some reason the sketch doesn't [yet] quit at the end
 			for (int i=0;i<num;i++) {
 	
 				Particle star = starSystem.particles.get(i);
@@ -106,6 +123,7 @@ public class ForegroundSketch extends Visualizer {
 		}
 	}
 	
+	
 	public ArrayList<PVector> attachNewTargetArray(String fileName) {
 		vector = new VectorLoader(parent,fileName);
 		vectorPts = vector.getPoints();
@@ -114,24 +132,22 @@ public class ForegroundSketch extends Visualizer {
 		ArrayList<PVector> tempPts = new ArrayList<PVector>();
 		int remainder = 0;
 		int loops;
+		
+		//loop through the vector points until you have a list of 1024 (some of the vector pts will be repeated in the list)
 		if (num>vectorPts.size()) {
 			remainder = num % vectorPts.size();
 			loops = (num-remainder)/vectorPts.size();
 			while(loops>0){
-				System.out.println("Loops: "+loops);
 				tempPts.addAll(vectorPts);
 				loops--;
 			}
-			System.out.println("Remainder: "+remainder);
-			System.out.println("VectorPts length: "+vectorPts.size());
 			for (int j=0;j<remainder;j++){
 				tempPts.add(vectorPts.get(j));				
 			}
-		} else {
+		} else { //i think this will work for the case when there are more vector pts than num; not yet tested though....
 			for (int j=0;j<num;j++) {
 				tempPts.add(vectorPts.get(j%vectorPts.size()));
 			}
-			
 		}
 		
 		return tempPts;
