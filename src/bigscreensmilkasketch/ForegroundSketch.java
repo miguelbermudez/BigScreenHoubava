@@ -15,6 +15,7 @@ public class ForegroundSketch extends Visualizer {
 	float rotation;
 	float spacing;
 	int num;
+	int numStars = 2048;
 	int totalParticles = 0;
 	int freqLimit = 350;
 	int freqIntervalIterator = 150;
@@ -64,7 +65,7 @@ public class ForegroundSketch extends Visualizer {
 	public void vizSetup() 
 	{
 		
-		starSystem = initParticles(num,true);
+		starSystem = initParticles(numStars,true);
 		
 		parent.noStroke();
 		particleSystem = initParticles(num,false);
