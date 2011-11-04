@@ -17,7 +17,7 @@ public class BigScreensMilkaSketch extends PApplet
 	public static HashMap<String,String> configVars = new HashMap<String, String>();
 	
 	//MPE SETTINGS
-	public static float scale = 1f;
+	public static float scale = .12f;
 	public static boolean MPE;
 	public static boolean local;
 
@@ -108,7 +108,7 @@ public class BigScreensMilkaSketch extends PApplet
 		
 	public void frameEvent(TCPClient cl) 
 	{
-		if (!MPE) {
+		if (local) {
 			scale(scale);
 		}
 		if (cl.messageAvailable()) {

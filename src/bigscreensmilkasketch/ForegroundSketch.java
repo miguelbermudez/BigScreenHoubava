@@ -16,7 +16,9 @@ public class ForegroundSketch extends Visualizer {
 	float spacing;
 	int num;
 	int totalParticles = 0;
-	int freqLimit = 300;
+	int freqLimit = 350;
+	int freqIntervalIterator = 150;
+	int frameInterval = 500;
 	
 	private PVector origin;
 	private ArrayList<PVector> spiralCords = new ArrayList<PVector>();
@@ -94,9 +96,14 @@ public class ForegroundSketch extends Visualizer {
 		}
 		
 		//gets a new set of particle targets every time a frequency limit gets hit
+		/*
 		if (songSum>freqLimit&&targetIndex<targetMap.size()-1){
 			targetIndex++;	
-			freqLimit+=200;
+			freqLimit+=freqIntervalIterator;
+		}
+		*/
+		if (parent.frameCount%frameInterval==0&&targetIndex<targetMap.size()-1){
+			targetIndex++;	
 		}
 		
 		if (songSum>0) { //this will stop the drawing when the song stops; for some reason the sketch doesn't [yet] quit at the end
@@ -116,8 +123,18 @@ public class ForegroundSketch extends Visualizer {
 				p1.update();
 				
 				parent.fill(197,246,252);
-				parent.ellipse(p1.getLocation().x, p1.getLocation().y, 4, 4);
 				
+				if (targetIndex>0){
+					parent.pushMatrix();
+					float rand = parent.random(1/3,3);
+					//parent.translate(BigScreensMilkaSketch.mWidth/3,0);
+					parent.ellipse(p1.getLocation().x, p1.getLocation().y, 4, 4);
+					parent.popMatrix();
+				} else {
+					parent.ellipse(p1.getLocation().x, p1.getLocation().y, 4, 4);
+				}
+				
+				//parent.ellipse(p1.getLocation().x, p1.getLocation().y, 4, 4);
 			}
 			songSum=0;
 		}
@@ -180,7 +197,7 @@ public class ForegroundSketch extends Visualizer {
 		    
 		    float x = radius * parent.cos(theta);
 		    float y = radius * parent.sin(theta);
-		    int more = 100;
+		    int more = 1;
 		    PVector pv = new PVector( (p.getLocation().x + x*more), (p.getLocation().y + y*more) );
 		    spiralCords.add(pv);
 		}
