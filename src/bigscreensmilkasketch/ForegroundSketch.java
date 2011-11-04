@@ -48,7 +48,7 @@ public class ForegroundSketch extends Visualizer {
 		
 		//Hacky hack hack to get all svg files
 		Properties prop = System.getProperties();
-		String path = prop.getProperty("java.class.path", null).split(":")[0].split("lib/")[0];
+		String path = prop.getProperty("java.class.path", null).split(":")[0].split("BigScreenHoubava")[0]+"BigScreenHoubava/";
 		System.out.println(path+"svg_files");
 		File dir = new File(path+"svg_files");
 		
